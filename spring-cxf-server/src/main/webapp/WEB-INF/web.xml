@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	version="4.0">
+	<display-name>spring-cxf-server</display-name>
+	<display-name>Archetype Created Web Application</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:beans.xml</param-value>
+	</context-param>
+
+	<!-- Spring监听器 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	<!-- 配置CXFServlet类（它继承了Filter）， 项目启动时会加载这个类， 所有请求都会先经过cxf框架（过滤器）  -->
+   <servlet>
+      <servlet-name>CXFServlet</servlet-name>
+      <servlet-class>
+         org.apache.cxf.transport.servlet.CXFServlet
+      </servlet-class>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+   <servlet-mapping>
+      <servlet-name>CXFServlet</servlet-name>
+      <!-- 所有请求都经过这个Servlet -->
+      <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

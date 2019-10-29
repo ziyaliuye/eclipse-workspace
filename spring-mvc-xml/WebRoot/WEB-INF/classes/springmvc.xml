@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="demo123" class="cn.cnm.controller.DemoController"></bean>
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<!-- localhost:8080/SpringMac-XML/demo?demo123 -->
+				<!-- key就是控制器逻辑名 value-ref 指定需要调用（没调用， 只是指定）的Controller -->
+				<entry key="demo" value-ref="demo123"></entry>
+			</map>
+		</property>
+	</bean>
+	<!-- 配置适配器， 当上门的 HandlerMapping指定了调用哪个Controller之后， 适配器会负责调用 -->
+	<!-- 在Spring4以后这个Bean会自动配置， 不需要再在这里单独配置了 -->
+	<bean
+		class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+	<!-- 配置视图解析器 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 配置前缀， 这样会在 Controller 返回的字符串前面加上 / -->
+		<property name="prefix" value="/"></property>
+		<!-- 配置后缀， 这样会在 Controller 返回的字符串后加上 .jsp -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+</beans>

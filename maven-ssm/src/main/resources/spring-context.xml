@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd" >
+
+	<!-- 自动扫描 -->
+	<context:component-scan
+		base-package="cn.cnm.service">
+		<!-- 不扫描@Controller注解的类 -->
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 引入jdbc配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:jdbc.properties" />
+	</bean>
+
+	<!-- 配置DataSource数据源信息 -->
+	<!-- c3p0连接池 -->
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<!-- 注意c3p0和basedatasouce的属性名有不一样的， 例如driverClass在basedatasouce中叫driverClassName -->
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 初始化连接大小 -->
+		<property name="initialPoolSize"
+			value="${jdbc.initialPoolSize}"></property>
+		<!-- 连接池最大数量 -->
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}"></property>
+		<!--连接池中保存的最少连接数目 -->
+		<property name="minPoolSize" value="${jdbc.minPoolSize}" />
+		<!-- 连接池最大空闲 -->
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}"></property>
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxConnectionAge"
+			value="${jdbc.maxConnectionAge}"></property>
+	</bean>
+
+	<!--配置 sqlSessionFactory 并将数据源注入 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 注入数据源 -->
+		<property name="dataSource" ref="dataSource" />
+		<!-- 指定要使用到到mybatis配置文件 -->
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<!--用于配置mapper映射xml -->
+		<property name="mapperLocations"
+			value="classpath:cn/cnm/mapper/*.xml" />
+	</bean>
+
+	<!-- 创建数据映射器 , 扫描包下的mapper接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.cnm.mapper" />
+
+	</bean>
+	<!-- 对数据源进行事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>

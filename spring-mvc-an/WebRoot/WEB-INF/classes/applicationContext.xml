@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 将两个实现类配置进来 -->
+	<bean id="myCommandA" class="cn.cnm.LookupMethodDemo.MyCommandA"></bean>
+	<bean id="myCommandB" class="cn.cnm.LookupMethodDemo.MyCommandB"></bean>
+
+	<!-- 配置抽象类， 这个抽象类可以理解为代理对象的那个类， 写具体的逻辑 -->
+	<bean id="commandManger"
+		class="cn.cnm.LookupMethodDemo.CommandManger">
+		<!-- bean代表返回的实现类类型 name调用的构建方法 -->
+		<lookup-method bean="myCommandB" name="createCommand" />
+	</bean>
+
+</beans>

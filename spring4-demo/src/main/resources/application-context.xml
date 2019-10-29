@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+       ">
+
+	<!-- placeholder 表示占位符 -->
+	<!-- classpath 表示java文件编译后的根目录，也就是 src/main/resources -->
+	<!-- 多个配置文件以 , 隔开 ， 例如 classpath:db1.properties,classpath:db2.properties -->
+	<context:property-placeholder
+		location="classpath:db.properties" />
+
+	<!-- 扫描组件 -->
+	<!-- <context:component-scan base-package="cn.cnm"></context:component-scan> -->
+
+	<!-- <bean id="people" class="cn.cnm.pojo.People"> index 构造参数的坐标 0表示第一个参数 
+		value：基础数据类型或者String ref：引用另一个Bean name：就是指定参数名字，通过名字来传递参数 type：参数的类型， 比如 
+		java.lang.String 参数个数不固定， 主要看能否正确找到相应的构造方法 如果提供的参数有多个符合条件的构造方法创建时会执行最后一个 
+		<constructor-arg index="0" name="id" value="1"></constructor-arg> <constructor-arg 
+		index="1" name="name" type="java.lang.String" value="大傻逼"></constructor-arg> 
+		</bean> -->
+	<!-- <bean id="testservice" class="cn.cnm.service.impl.TestDaoImpl"></bean> 
+		将工厂类交给spring管理 <bean id="factory" class="cn.cnm.PeopleFactor"></bean> 创建一个 
+		People 类的bean， 调用的是PeopleFactory的 newInstance 方法 <bean id="people1" factory-bean="factory" 
+		factory-method="newInstance"></bean> 静态工厂可以直接创建类自身不需要spring单独创建， 但是需要指定Factory类 
+		<bean id="people2" class="cn.cnm.PeopleFactor" factory-method="newInstance"></bean> 
+		<bean id="people3" class="cn.cnm.pojo.People"> 给对象属性 id 注入值， 调用的就是对应的 set 
+		方法 <property name="id" value="2222"></property> <property name="name" value="王八"></property> 
+		<property name="sets"> <set> <value>1</value> <value>2</value> <value>3</value> 
+		<value>4</value> </set> </property> <property name="lists"> <list> <value>1</value> 
+		<value>2</value> <value>3</value> <value>4</value> </list> </property> <property 
+		name="strings"> <array> <value>1</value> <value>2</value> <value>3</value> 
+		<value>4</value> </array> </property> <property name="maps"> <map> <entry 
+		key="a" value="1"> </entry> <entry key="b" value="2"> </entry> </map> </property> 
+		<property name="files"> <props> <prop key="string1">wocaonimei</prop> <prop 
+		key="string2">wocaonimeia</prop> </props> </property> </bean> -->
+
+	<!-- 将前置通知功能类添加进来 -->
+	<bean id="mybefore" class="cn.cnm.advice.MyBeforeAdvice"></bean>
+
+	<!-- 将后置通知功能类添加进来 -->
+	<bean id="myafter" class="cn.cnm.advice.MyAfterAdvice"></bean>
+
+	<!-- AOPDemo 添加起来 -->
+	<bean id="aopDemo" class="cn.cnm.demo.AopCase"></bean>
+
+	<!-- 添加 AOP 配置信息 -->
+	<!-- <aop:config> 添加一个切点 格式是固定的 execution(* xxx) 这里 * 后面有空格 假定方法有两个参数则写成这个格式（String,int 
+		是参数类型， args() 里的是参数值）： execution(* cn.cnm.Demo.demo2(String,int) and args(name, 
+		age)) <aop:pointcut expression="execution(* cn.cnm.demo.AopCase.demo2())" 
+		id="myPont" /> 引入上面定义的 mybefore 前置通知并 绑定到 myPoint 切点上 <aop:advisor advice-ref="mybefore" 
+		pointcut-ref="myPont" /> 引入上面定义的 mybefore 前置通知并 绑定到 myPoint 切点上 <aop:advisor 
+		advice-ref="myafter" pointcut-ref="myPont" /> </aop:config> -->
+
+	<!-- 将异常通知类添加进来 -->
+	<!-- <bean id="myThrowAdvice" class="cn.cnm.advice.MyThrowAdvice"></bean> -->
+
+	<!-- <aop:config> 这里必须引用异常通知类， 不然spring是找不到异常通知类的 <aop:aspect ref="myThrowAdvice"> 
+		定义切点， 注意这里切点是在 <aop:aspect> 标签内 <aop:pointcut expression="execution(* cn.cnm.demo.AopCase.demo2())" 
+		id="myPont" /> 当绑定的切点异常后调用上面引入的 myThrowAdvice 的具体哪个方法 throwing 异常信息， 这里当成参数传到异常通知类的 
+		mythorw 方法中， 而且参数名必须也是 e <aop:after-throwing method="mythorw" pointcut-ref="myPont" 
+		throwing="e" /> </aop:aspect> </aop:config> -->
+
+	<!-- 将异常通知类添加进来 -->
+	<!-- <bean id="mMySchemaAdvice" class="cn.cnm.advice.MySchemaAdvice"></bean> -->
+
+	<!-- <aop:config> <aop:pointcut expression="execution(* cn.cnm.demo.AopCase.demo2())" 
+		id="myPiont" /> 引入异常通知类，绑定切点 <aop:advisor advice-ref="mMySchemaAdvice" pointcut-ref="myPiont" 
+		/> </aop:config> -->
+
+	<!-- 将异常通知类添加进来 -->
+	<!-- <bean id="myArround" class="cn.cnm.advice.MyArround"></bean> -->
+
+	<!-- <aop:config> <aop:pointcut expression="execution(* cn.cnm.demo.AopCase.demo2())" 
+		id="myPiont" /> <aop:advisor advice-ref="myArround" pointcut-ref="myPiont" 
+		/> </aop:config> -->
+
+	<!-- <aop:config> <aop:aspect ref="myAdvice"> <aop:pointcut expression="execution(* 
+		cn.cnm.demo.AopCase.demo2())" id="myPiont" /> 前置通知方法和绑定切点 <aop:before method="meBefore" 
+		pointcut-ref="myPiont" /> 后置通知方法和绑定切点， 切点不管有无异常都会执行 <aop:after method="meAfter" 
+		pointcut-ref="myPiont" /> 当切点正常运行后才会执行 <aop:after-returning method="meAfter" 
+		pointcut-ref="myPiont" /> 异常通知方法指定和切点绑定 <aop:after-throwing method="meThrow" 
+		pointcut-ref="myPiont" /> 环绕通知方法指定和切点绑定 <aop:around method="meArround" pointcut-ref="myPiont" 
+		/> </aop:aspect> </aop:config> -->
+
+	<!-- 将异常通知类添加进来 -->
+	<!-- <bean id="myAdvice" class="cn.cnm.advice.MyAdvice"></bean> -->
+
+	<!-- <aop:config> <aop:aspect ref="myAdvice"> demo方法传递两个参数 <aop:pointcut 
+		expression="execution(* cn.cnm.demo.AopCase.demo2(String,int)) and args(name,age)" 
+		id="myPiont" /> 将切点也就是 demo2 的参数传到通知的方法中， 注意名字必须得一致 <aop:before method="meBefore" 
+		pointcut-ref="myPiont" arg-names="name,age" /> </aop:aspect> </aop:config> -->
+
+	<!-- 添加组件扫描并指定扫描包的范围 多个包用 , 隔开 -->
+	<context:component-scan base-package="cn.cnm"></context:component-scan>
+	<!-- ture时：使用 cglib 动态代理 false：jdk动态代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
+	<bean id="teacher" class="cn.cnm.pojo.Teacher"></bean>
+	<bean id="student" class="cn.cnm.pojo.Student"></bean>
+
+	<!-- 数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="driverClassName" value="${jdbc.driver}"></property>
+	</bean>
+
+	<!-- spring 整合 mybatis 工具包 这个工厂对象处理使用数据库时建立一个 Session -->
+	<!-- 在使用时是需要连接数据库的， 所以必须将数据库连接连接的对象注入进来 -->
+	<bean id="factory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 不需要被引用的类也可以不写id属性， 直接加载进来就行 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描包下的 xml 文件， 需要注入包的路径 -->
+		<property name="basePackage" value="cn.cnm.mapper"></property>
+		<!-- 加载的内容就是SQL， 它自己是不能执行的， 需要依赖上面的SqlSessionFactoryBean实例 -->
+		<!-- <property name="sqlSessionFactory" ref="factory"></property> -->
+		<property name="sqlSessionFactoryBeanName" value="factory"></property>
+	</bean>
+
+	<bean id="airportService"
+		class="cn.cnm.service.impl.AirportServiceImpl" scope="singleton"></bean>
+
+	<!-- Spring提供的数据源事务控制器，事务管理器基于通知 -->
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 涉及数据事务操作， 一定要有数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 配置声明式事务 -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<!-- 属性 -->
+		<tx:attributes>
+			<!-- 需要事务空的发放名， 这里可以写通配符 -->
+			<!-- name属性：方法名 -->
+			<tx:method name="ins*"
+				no-rollback-for="java.lang.ArithmeticException" />
+			<tx:method name="del*" />
+			<tx:method name="upd*" />
+			<!-- read-only 设置事务为只读事务（通知数据库该事务为只读事务） -->
+			<!-- 会对性能有一定提升， 只有查询方法时可以用这种方法 -->
+			<!-- * 表示通配所有方法， 由于上面增删改已经设置了， 所以这里就剩查询了 -->
+			<tx:method name="*" read-only="false" isolation="DEFAULT"
+				rollback-for="java.lang.Exception" />
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 声明式事务是基于AOP的 -->
+	<aop:config>
+		<!-- 这里单纯的就是定义一个切点 -->
+		<aop:pointcut
+			expression="execution(* cn.cnm.service.impl.*.*(..))" id="myPoint" />
+		<!-- 将切点与声明式事务绑定 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPoint" />
+	</aop:config>
+</beans>
+

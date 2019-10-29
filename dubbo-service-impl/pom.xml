@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.cnm</groupId>
+	<artifactId>dubbo-service-impl</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<java.version>12</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>12</maven.compiler.source>
+		<maven.compiler.target>12</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<!-- 依赖接口项目 -->
+		<dependency>
+			<groupId>cn.cnm</groupId>
+			<artifactId>dubbo-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>dubbo</artifactId>
+			<version>2.6.7</version>
+		</dependency>
+		<!-- 登录Zookeeper客户端所需要的jar -->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.11</version>
+		</dependency>
+		<!-- dubbo启动服务所以来的网络框架 -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.41.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+	</dependencies>
+
+	<!-- <build> <plugins> <plugin> <artifactId>maven-assembly-plugin</artifactId> 
+		<configuration> <descriptors> <descriptor>src/main/assembly/assembly.xml</descriptor> 
+		</descriptors> </configuration> <executions> <execution> <id>make-assembly</id> 
+		<phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
+		</executions> </plugin> </plugins> </build> -->
+</project>

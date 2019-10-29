@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/jaxws
+       ">
+
+	<!-- CXF3.0以上版本不需要加入这个配置， 加入即报错 -->
+	<!-- 引cxf的一些核心配置， 这些配置文件都在CXF的jar包中可以找到， 引入即可 -->
+	<!-- <import resource="classpath:META-INF/cxf/cxf.xml" /> -->
+	<!-- <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" /> -->
+	<!-- <import resource="classpath:META-INF/cxf/cxf-servlet.xml" /> -->
+
+	<!-- jaxws是cxf配置引入的定义标签， 这里就是定义一个服务 -->
+	<!-- id就是服务名， implementor就是服务的实现类，address则是发布地址 -->
+	<!-- 注意address只是写地址后缀即可， 前面的已经固定好了， 所以项目必须是web工程 -->
+	<jaxws:endpoint id="personServer"
+		implementor="cn.cnm.service.impl.PersonServiceImpl"
+		address="/personServer">
+		<!-- 配置服务端入拦截器 -->
+		<jaxws:inInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingInInterceptor"></bean>
+			<bean class="cn.cnm.interceptor.MyServerInterceptor"></bean>
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"></bean>
+		</jaxws:outInterceptors>
+	</jaxws:endpoint>
+
+</beans>

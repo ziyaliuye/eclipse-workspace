@@ -1,0 +1,126 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.cnm</groupId>
+	<artifactId>spring-cloud</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- 保证每次都是 jdk1.8 编译 -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<junit.version>4.12</junit.version>
+		<log4j.version>1.2.17</log4j.version>
+		<lombok.version>1.16.18</lombok.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Edgware.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>1.5.21.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>8.0.16</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>1.0.31</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>2.1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
+				<version>1.2.3</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-zuul</artifactId>
+				<version>1.4.7.RELEASE</version>
+			</dependency>
+			<!-- 避免 Config 的 Git 插件报错：org/eclipse/jgit/api/TransportConfigCallback -->
+			<dependency>
+				<groupId>org.eclipse.jgit</groupId>
+				<artifactId>org.eclipse.jgit</artifactId>
+				<version>4.10.0.201712302008-r</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<modules>
+		<module>cloud-api</module>
+		<module>provider</module>
+		<module>consumer-9001</module>
+		<module>eureka-server-7001</module>
+		<module>eureka-server-7002</module>
+		<module>eureka-server-7003</module>
+		<module>provider-8002</module>
+		<module>provider-8003</module>
+		<module>consumer-feign</module>
+		<module>provider-hystrix</module>
+		<module>consumer-hystrix-dashboard</module>
+		<module>zuul</module>
+		<module>config</module>
+		<module>config-server</module>
+		<module>config-client</module>
+		<module>config-eureka-server</module>
+		<module>config-provider</module>
+	</modules>
+
+	<build>
+		<!-- 总工程的名称 -->
+		<finalName>spring-cloud</finalName>
+		<resources>
+			<resource>
+				<!-- 这里表示插件可以访问所有工程（子工程）这个文件夹 下的内容 -->
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<!-- 插件的坐标， 这个就是解析上面文件夹下文件的文件 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<!-- 配置信息， 可以加载项目的配置信息， 例如 artifactId、version 等等 -->
+				<configuration>
+					<delimiters>
+						<!-- 分隔符的意思， 表示以 $ 开头和结尾的内容就会替换成对应的配置信息 -->
+						<delimit>$</delimit>
+					</delimiters>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

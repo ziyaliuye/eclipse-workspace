@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd ">
+	<!-- 扫描注解 -->
+	<context:component-scan
+		base-package="cn.cnm.controller"></context:component-scan>
+
+	<!-- 注解驱动， 相当于将 HandlerMapping、HandlerAdapter、ViewResolver 的实现类 配置进来 -->
+	<!-- SimpleUrlHandlerMapping、SimpleControllerHandlerAdapter、 InternalResourceViewResolver -->
+	<!-- 将驱动配置进来 -->
+	<mvc:annotation-driven></mvc:annotation-driven>
+
+	<!-- 配置SpringMVC自定义视图解析器， 启动过后自定义的和系统默认的都会同时运行 -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 配置前缀， 也就是所有视图都会加上 / 从根路径开始寻找资源 -->
+		<property name="prefix" value="/"></property>
+		<!-- 配置后缀 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+
+	<!-- 设置静态原因不要再拦截 -->
+	<mvc:resources location="/files/" mapping="/files/**"></mvc:resources>
+	<!-- /photo/* 表示请求/photo/后面所有请求， 不包括 /photo/a/b 这种请求 -->
+	<!-- /photo/**表示请求/photo/后面所有请求， 包括 /photo/a/b 这种请求 -->
+	<!-- location 表示当符合要求的请求来了以后去哪个路径下找 -->
+	<mvc:resources location="/photo/" mapping="/photo/**"></mvc:resources>
+
+	<!-- 添加 multipartResolver解析器 支持上传文件解析 -->
+	<!-- 这个解析器组件依赖于Apache提供的两个文件上传工具包 -->
+	<!-- id名必须为 multipartResolver， 不然SpringMVC会找不到这个解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件最大字节， 超过后则会报错 -->
+		<property name="maxUploadSize" value="1024"></property>
+	</bean>
+
+
+	<!-- 异常解析器 -->
+	<bean id="exceptionResolver"
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop
+					key="java.lang.Exception">Error</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- 配置拦截器 -->
+	<mvc:interceptors>
+		<!-- 直接bean标签直接将拦截器类配置进来， 这样表示所有请求都会被这个拦截器拦截 -->
+		<bean class="cn.cnm.interceptor.DemoInterceptor"></bean>
+		<!-- 使用这个标签可以配置指定请求进入拦截器 -->
+		<mvc:interceptor>
+			<!-- 拦截的URL配置， 例如配置 /demo 就表示只拦截请求是 /demo 的这一个请求 -->
+			<!-- 可以配置多个 -->
+			<mvc:mapping path="/demo1" />
+			<mvc:mapping path="/upload" />
+			<bean class="cn.cnm.interceptor.DemoInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</beans>

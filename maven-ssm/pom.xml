@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>cn.cnm</groupId>
+	<artifactId>maven-ssm</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<servlet-version>3.0.1</servlet-version>
+		<jsp-version>2.2</jsp-version>
+		<jstl-version>1.2</jstl-version>
+		<spring-version>5.1.9.RELEASE</spring-version>
+		<aspectjweaver-version>1.9.4</aspectjweaver-version>
+		<mybatis-version>3.5.2</mybatis-version>
+		<mybatis-spring-version>2.0.2</mybatis-spring-version>
+		<log4j-version>1.2.17</log4j-version>
+		<mysql-version>8.0.17</mysql-version>
+		<jackson-databind-version>2.10.0.pr2</jackson-databind-version>
+		<commons-fileupload-version>1.4</commons-fileupload-version>
+		<c3p0-version>0.9.5.4</c3p0-version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp-version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectjweaver-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${mybatis-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>${mybatis-spring-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.8</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${c3p0-version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<!-- 配置项目编译后运行环境Tomcat信息 -->
+				<groupId>org.apache.tomcat.maven</groupId>
+				<!-- 插件就是Tomcat6和7没有其他的 -->
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<!-- 注意是插件版本， 不是Tomcat版本 -->
+				<version>2.2</version>
+				<configuration>
+					<!-- 运行端口 -->
+					<port>8080</port>
+					<!-- 在Tomcat中如果直接输入 /， 那么默认访问的就是Root项目(Tomcat欢迎界面) -->
+					<!-- 项目编译后内容放到Tomcat中webapps目录的哪个位置， / 表示放到 Root项目下 -->
+					<!-- 在以往项目中都是通过项目名访问，而 Root项目可以直接通过 / 访问 -->
+					<!-- 这里是分布式思想， 一个项目就一个Tomcat， 所以将项目放入Root目录下 -->
+					<path>/</path>
+					<!-- 编码设置 -->
+					<uriEncoding>UTF-8</uriEncoding>
+					<source>1.8</source>
+					<target>1.8</target>
+					<!-- 远程Tomcat Manager设置的用户密码 -->
+					<username>root</username>
+					<password>root</password>
+					<!-- 访问URL和执行的命令， 也就是地址后面加上 text -->
+					<url>http://192.168.58.128:8080/manager/text</url>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

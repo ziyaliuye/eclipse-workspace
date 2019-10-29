@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://impl.webservice.cnm.cn/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns2="http://schemas.xmlsoap.org/soap/http" xmlns:ns1="http://webservice.cnm.cn/" name="HelloWSImplService" targetNamespace="http://impl.webservice.cnm.cn/">
+  <wsdl:import location="http://127.0.0.1:8098/webservice-server/hellowsimpl?wsdl=HelloWS.wsdl" namespace="http://webservice.cnm.cn/">
+    </wsdl:import>
+  <wsdl:binding name="HelloWSImplServiceSoapBinding" type="ns1:HelloWS">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="sayHello">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="sayHello">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sayHelloResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="HelloWSImplService">
+    <wsdl:port binding="tns:HelloWSImplServiceSoapBinding" name="HelloWSImplPort">
+      <soap:address location="http://127.0.0.1:8080/webservice-server/hellowsimpl"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

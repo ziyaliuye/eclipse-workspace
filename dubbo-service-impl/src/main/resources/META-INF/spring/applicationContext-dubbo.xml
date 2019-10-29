@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+	<!-- 给当前的Provider取一个服务名， 给注册中心看的 -->
+	<dubbo:application name="demo-provider" />
+	<!-- 注册中心地址， Zookeeper就是注册中心， 连接它的Client端口 -->
+	<dubbo:registry
+		address="zookeeper://192.168.58.128:2181" />
+	<!-- 配置当前服务的端口 dubbo是协议名称 -->
+	<dubbo:protocol name="dubbo" port="20890" />
+
+	<!-- 具体的实现类， 通过Spring来配置， Dubbo容器从Spring容器中获取 -->
+	<bean id="demoServiceImpl" class="cn.cnm.service.DemoServiceImpl" />
+
+	<!-- 注册功能接口， 注意是给注册中心注册， 分成两个项目是部让consumer知道具体实现 -->
+	<dubbo:service interface="cn.cnm.service.DemoService"
+		ref="demoServiceImpl" />
+</beans>

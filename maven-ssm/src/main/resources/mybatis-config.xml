@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<!-- 实体类别名 -->
+	<typeAliases>
+		<!-- 整个包下实体类都映射别名 -->
+		<package name="cn.cnm.pojo"></package>
+	</typeAliases>
+
+</configuration>

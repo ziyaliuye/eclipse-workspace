@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<!--自动注册 RequestMappingHandlerMapping、RequestMappingHandlerAdapter 等bean -->
+	<!--<mvc:annotation-driven /> 会自动注册DefaultAnnotationHandlerMapping与 AnnotationMethodHandlerAdapter 
+		两个bean,它解决了一些@controllerz注解使用时的提前配置 -->
+	<mvc:annotation-driven />
+
+	<!-- 扫描Controller -->
+	<context:component-scan
+		base-package="cn.cnm.controller">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<!-- 静态资源处理， css， js， images -->
+	<mvc:resources mapping="/resources/**"
+		location="/resources/" />
+	<!-- 静态资源可访问的设置方式 -->
+	<mvc:default-servlet-handler />
+	<!--配置 页面控制器 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!--设置解析器类 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<!--视图解析前缀 -->
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<!--视图解析后缀 -->
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>

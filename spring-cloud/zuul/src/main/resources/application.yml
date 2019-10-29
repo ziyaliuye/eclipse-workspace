@@ -1,0 +1,22 @@
+server:
+   port: 8008
+   
+spring: 
+   application: 
+       name: zuul
+
+eureka:
+    client: 
+        service-url: 
+            defaultZone: http://eureka-server-7001:7001/eureka/,http://eureka-server-7002:7002/eureka/,http://eureka-server-7003:7003/eureka/
+    instance:
+      instance-id: zuul-8008
+      prefer-ip-address: true
+      
+zuul:
+  prefix: /cnm  # 给所有服务加上统一的前缀
+  ignored-services: "*" # 忽略真实访问地址
+  routes:
+    mydept.serviceId: provider # 真实的访问地址
+    mydept.path: /myprovider/** # 对应虚拟的地址
+  

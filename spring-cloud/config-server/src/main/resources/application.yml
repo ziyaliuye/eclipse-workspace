@@ -1,0 +1,13 @@
+server:
+  port: 3344
+  
+spring:  application:    name: config-server
+  cloud:    config:      server:        git:   # Git仓库的ssh地址          uri: https://github.com/ziyaliuye/springcloud-config.git
+
+eureka: # 绑定服务端的地址
+ client: 
+  service-url: 
+   defaultZone: http://eureka-server-7001:7001/eureka/,http://eureka-server-7002:7002/eureka/,http://eureka-server-7003:7003/eureka/
+ instance: # 设置当前服务在 Eureka 注册中心显示的ID名称
+    instance-id: config-server
+    prefer-ip-address: true # 以IP地址形式注册该服务

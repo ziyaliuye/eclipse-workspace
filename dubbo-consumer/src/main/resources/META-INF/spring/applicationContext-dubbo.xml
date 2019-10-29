@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+	<!-- 给当前的consumer取名字 -->
+	<dubbo:application name="demo-consumer" />
+	<!-- 注册中心地址， Zookeeper就是注册中心， 连接它的Client端口 -->
+	<dubbo:registry
+		address="zookeeper://192.168.58.128:2181" />
+
+	<!-- 配置注解扫描, 这里Dubbo扫描Consumer中的Service -->
+	<dubbo:annotation package="cn.cnm.service.impl" />
+
+	<!-- 测试类测试用 -->
+	<bean id="testServiceImpl" class="cn.cnm.service.impl.TestServiceImpl" />
+
+</beans>
